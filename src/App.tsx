@@ -134,28 +134,29 @@ export default function App() {
 
   return (
     <div className="app">
-      <header className="app-header">
-        <h1>Trips &amp; Plans</h1>
-        <div className="header-actions">
-          <button
-            type="button"
-            className="theme-btn"
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-          >
-            {theme === 'dark' ? '☀' : '☾'}
-          </button>
-          <button
-            className="add-btn"
-            onClick={() => setEditing(emptyForm())}
-            aria-label="Add item"
-          >
-            +
-          </button>
-        </div>
-      </header>
+      <div className="app-top">
+        <header className="app-header">
+          <h1>Trips &amp; Plans</h1>
+          <div className="header-actions">
+            <button
+              type="button"
+              className="theme-btn"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            >
+              {theme === 'dark' ? '☀' : '☾'}
+            </button>
+            <button
+              className="add-btn"
+              onClick={() => setEditing(emptyForm())}
+              aria-label="Add item"
+            >
+              +
+            </button>
+          </div>
+        </header>
 
-      <div className="view-toggle" role="tablist">
+        <div className="view-toggle" role="tablist">
         <button
           type="button"
           role="tab"
@@ -174,6 +175,7 @@ export default function App() {
         >
           Calendar
         </button>
+        </div>
       </div>
 
       <main className="app-main">
