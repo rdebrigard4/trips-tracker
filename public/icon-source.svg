@@ -6,8 +6,8 @@
     </linearGradient>
   </defs>
   <rect width="512" height="512" rx="96" fill="url(#bg)"/>
-  <g transform="translate(256 180) rotate(-30)" fill="#60a5fa">
-    <path d="M -86 -8 L 12 -28 L 60 -64 L 88 -56 L 60 -10 L 92 -2 L 100 14 L 56 18 L 30 56 L 14 52 L 22 22 L -16 28 L -28 48 L -42 44 L -38 14 L -86 8 Z"/>
+  <g transform="translate(196 115) scale(5)" fill="#60a5fa">
+    <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z"/>
   </g>
   <text x="256" y="410" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="200" font-weight="800" text-anchor="middle" fill="#f1f5f9" letter-spacing="-6">DB</text>
 </svg>
