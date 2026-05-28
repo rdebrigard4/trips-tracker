@@ -1,16 +1,3 @@
-export type Group = 'today' | 'thisWeek' | 'nextWeek' | 'thisMonth' | 'later' | 'past'
-
-export const GROUP_ORDER: Group[] = ['past', 'today', 'thisWeek', 'nextWeek', 'thisMonth', 'later']
-
-export const GROUP_LABELS: Record<Group, string> = {
-  today: 'Today',
-  thisWeek: 'This week',
-  nextWeek: 'Next week',
-  thisMonth: 'Later this month',
-  later: 'Later',
-  past: 'Past',
-}
-
 function startOfDay(d: Date): Date {
   const x = new Date(d)
   x.setHours(0, 0, 0, 0)
@@ -21,23 +8,21 @@ export function parseDate(iso: string): Date {
   return startOfDay(new Date(iso + 'T00:00:00'))
 }
 
-function diffDays(a: Date, b: Date): number {
-  return Math.round((b.getTime() - a.getTime()) / 86400000)
+export function monthKey(iso: string): string {
+  return iso.slice(0, 7)
 }
 
-export function groupFor(item: { startDate: string }): Group {
-  const today = startOfDay(new Date())
-  const start = parseDate(item.startDate)
-  const diff = diffDays(today, start)
-  if (diff < 0) return 'past'
-  if (diff === 0) return 'today'
-  const daysUntilSunday = (7 - today.getDay()) % 7
-  if (diff <= daysUntilSunday) return 'thisWeek'
-  if (diff <= daysUntilSunday + 7) return 'nextWeek'
-  if (start.getMonth() === today.getMonth() && start.getFullYear() === today.getFullYear()) {
-    return 'thisMonth'
-  }
-  return 'later'
+export function monthLabel(key: string): string {
+  const [y, m] = key.split('-').map(Number)
+  return new Date(y, m - 1, 1).toLocaleDateString(undefined, {
+    month: 'long',
+    year: 'numeric',
+  })
+}
+
+export function currentMonthKey(): string {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
 }
 
 export function formatRange(startIso: string, endIso?: string): string {

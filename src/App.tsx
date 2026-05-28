@@ -8,7 +8,7 @@ import {
   saveItem,
   subscribeItems,
 } from './storage'
-import { GROUP_LABELS, GROUP_ORDER, formatRange, groupFor } from './dates'
+import { currentMonthKey, formatRange, monthKey, monthLabel } from './dates'
 import CalendarView from './CalendarView'
 import { applyTheme, loadTheme, saveTheme } from './theme'
 import type { Theme } from './theme'
@@ -89,22 +89,31 @@ export default function App() {
     })
   }, [])
 
-  const grouped = GROUP_ORDER.map((group) => ({
-    group,
-    items: items
-      .filter((i) => groupFor(i) === group)
-      .sort((a, b) => a.startDate.localeCompare(b.startDate)),
-  })).filter((g) => g.items.length > 0)
+  const byMonth = new Map<string, Item[]>()
+  for (const item of items) {
+    const key = monthKey(item.startDate)
+    const arr = byMonth.get(key) ?? []
+    arr.push(item)
+    byMonth.set(key, arr)
+  }
+  const months = [...byMonth.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, monthItems]) => ({
+      key,
+      label: monthLabel(key),
+      items: monthItems.sort((a, b) => a.startDate.localeCompare(b.startDate)),
+    }))
 
-  const firstNonPastIndex = grouped.findIndex((g) => g.group !== 'past')
+  const currentKey = currentMonthKey()
+  const firstUpcomingIndex = months.findIndex((m) => m.key >= currentKey)
 
   useEffect(() => {
     if (view !== 'timeline') return
-    if (firstNonPastIndex <= 0) return
+    if (firstUpcomingIndex <= 0) return
     requestAnimationFrame(() => {
       upcomingAnchorRef.current?.scrollIntoView({ block: 'start' })
     })
-  }, [view, firstNonPastIndex])
+  }, [view, firstUpcomingIndex])
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -197,7 +206,7 @@ export default function App() {
             onAddForDate={(date) => setEditing({ ...emptyForm(), startDate: date })}
           />
         )}
-        {view === 'timeline' && grouped.length === 0 && (
+        {view === 'timeline' && months.length === 0 && (
           <div className="empty">
             <p>Nothing planned yet.</p>
             <button className="primary" onClick={() => setEditing(emptyForm())}>
@@ -205,14 +214,14 @@ export default function App() {
             </button>
           </div>
         )}
-        {view === 'timeline' && grouped.map(({ group, items: groupItems }, idx) => (
+        {view === 'timeline' && months.map(({ key, label, items: monthItems }, idx) => (
           <section
-            key={group}
-            className={`group group-${group}`}
-            ref={idx === firstNonPastIndex && firstNonPastIndex > 0 ? upcomingAnchorRef : undefined}
+            key={key}
+            className={`group group-month${key < currentKey ? ' group-past' : ''}`}
+            ref={idx === firstUpcomingIndex && firstUpcomingIndex > 0 ? upcomingAnchorRef : undefined}
           >
-            <h2>{GROUP_LABELS[group]}</h2>
-            {groupItems.map((item) => (
+            <h2>{label}</h2>
+            {monthItems.map((item) => (
               <article
                 key={item.id}
                 className={`card card-${item.type}`}
