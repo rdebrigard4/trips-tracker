@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import type { Item, ItemType, Who } from './types'
 import {
@@ -63,6 +63,7 @@ export default function App() {
   const [editing, setEditing] = useState<FormState | null>(null)
   const [view, setView] = useState<View>('timeline')
   const [theme, setTheme] = useState<Theme>(() => loadTheme())
+  const upcomingAnchorRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     applyTheme(theme)
@@ -94,6 +95,16 @@ export default function App() {
       .filter((i) => groupFor(i) === group)
       .sort((a, b) => a.startDate.localeCompare(b.startDate)),
   })).filter((g) => g.items.length > 0)
+
+  const firstNonPastIndex = grouped.findIndex((g) => g.group !== 'past')
+
+  useEffect(() => {
+    if (view !== 'timeline') return
+    if (firstNonPastIndex <= 0) return
+    requestAnimationFrame(() => {
+      upcomingAnchorRef.current?.scrollIntoView({ block: 'start' })
+    })
+  }, [view, firstNonPastIndex])
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -194,8 +205,12 @@ export default function App() {
             </button>
           </div>
         )}
-        {view === 'timeline' && grouped.map(({ group, items: groupItems }) => (
-          <section key={group} className={`group group-${group}`}>
+        {view === 'timeline' && grouped.map(({ group, items: groupItems }, idx) => (
+          <section
+            key={group}
+            className={`group group-${group}`}
+            ref={idx === firstNonPastIndex && firstNonPastIndex > 0 ? upcomingAnchorRef : undefined}
+          >
             <h2>{GROUP_LABELS[group]}</h2>
             {groupItems.map((item) => (
               <article

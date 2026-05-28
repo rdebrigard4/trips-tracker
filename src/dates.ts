@@ -1,6 +1,6 @@
 export type Group = 'today' | 'thisWeek' | 'nextWeek' | 'thisMonth' | 'later' | 'past'
 
-export const GROUP_ORDER: Group[] = ['today', 'thisWeek', 'nextWeek', 'thisMonth', 'later', 'past']
+export const GROUP_ORDER: Group[] = ['past', 'today', 'thisWeek', 'nextWeek', 'thisMonth', 'later']
 
 export const GROUP_LABELS: Record<Group, string> = {
   today: 'Today',
