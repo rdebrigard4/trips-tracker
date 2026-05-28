@@ -228,6 +228,40 @@ body {
   border-width: 2px;
 }
 
+.cal-cell.tint-rich {
+  background: color-mix(in srgb, var(--who-rich) 22%, transparent);
+}
+.cal-cell.tint-syd {
+  background: color-mix(in srgb, var(--who-syd) 22%, transparent);
+}
+.cal-cell.tint-both {
+  background: color-mix(in srgb, var(--who-both) 22%, transparent);
+}
+.cal-cell.tint-rich-syd {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--who-rich) 22%, transparent),
+    color-mix(in srgb, var(--who-syd) 22%, transparent)
+  );
+}
+
+:root[data-theme='dark'] .cal-cell.tint-rich {
+  background: color-mix(in srgb, var(--who-rich) 40%, transparent);
+}
+:root[data-theme='dark'] .cal-cell.tint-syd {
+  background: color-mix(in srgb, var(--who-syd) 40%, transparent);
+}
+:root[data-theme='dark'] .cal-cell.tint-both {
+  background: color-mix(in srgb, var(--who-both) 40%, transparent);
+}
+:root[data-theme='dark'] .cal-cell.tint-rich-syd {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--who-rich) 40%, transparent),
+    color-mix(in srgb, var(--who-syd) 40%, transparent)
+  );
+}
+
 .cal-num {
   font-size: 0.85rem;
   font-weight: 500;
@@ -384,6 +418,10 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 0.25rem;
+}
+
+:root[data-theme='dark'] .card-date {
+  color: #cbd5e1;
 }
 
 .card-title {

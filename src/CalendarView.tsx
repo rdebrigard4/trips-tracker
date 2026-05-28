@@ -12,15 +12,13 @@ const DOW = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 const MONTHS_BACK = 6
 const MONTHS_FORWARD = 18
 
-function tintFor(whoSet: Set<Who>): string | undefined {
-  const mix = (v: string) => `color-mix(in srgb, ${v} 22%, transparent)`
-  if (whoSet.has('both')) return mix('var(--who-both)')
-  if (whoSet.has('rich') && whoSet.has('syd')) {
-    return `linear-gradient(135deg, ${mix('var(--who-rich)')}, ${mix('var(--who-syd)')})`
-  }
-  if (whoSet.has('rich')) return mix('var(--who-rich)')
-  if (whoSet.has('syd')) return mix('var(--who-syd)')
-  return undefined
+function tintClass(whoSet: Set<Who>): string {
+  if (whoSet.size === 0) return ''
+  if (whoSet.has('both')) return 'tint-both'
+  if (whoSet.has('rich') && whoSet.has('syd')) return 'tint-rich-syd'
+  if (whoSet.has('rich')) return 'tint-rich'
+  if (whoSet.has('syd')) return 'tint-syd'
+  return ''
 }
 
 function pad(n: number): string {
@@ -121,14 +119,13 @@ export default function CalendarView({ items, onSelectItem, onAddForDate }: Prop
                 const isToday = iso === todayIso
                 const dayItems = itemsByDay.get(iso) ?? []
                 const whoSet = new Set(dayItems.map((it) => it.who ?? 'both'))
-                const tint = tintFor(whoSet)
+                const tint = tintClass(whoSet)
                 return (
                   <button
                     key={i}
                     ref={isToday ? todayRef : undefined}
                     type="button"
-                    className={`cal-cell${isToday ? ' today' : ''}`}
-                    style={tint ? { background: tint } : undefined}
+                    className={`cal-cell${isToday ? ' today' : ''}${tint ? ' ' + tint : ''}`}
                     onClick={() => setSelectedDay(iso)}
                   >
                     <span className="cal-num">{cell.getDate()}</span>
