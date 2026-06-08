@@ -33,6 +33,83 @@
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
+:root[data-theme='fun'] {
+  color-scheme: light;
+  --bg: #fdf4ff;
+  --surface: #ffffff;
+  --text: #4c1d95;
+  --muted: #9d8ec4;
+  --border: #f3e8ff;
+  --primary: #ec4899;
+  --primary-fg: #ffffff;
+  --trip: #d946ef;
+  --obligation: #fb923c;
+  --danger: #e11d48;
+  --who-rich: #60a5fa;
+  --who-syd: #f472b6;
+  --who-both: #34d399;
+  --shadow: 0 2px 8px rgba(236, 72, 153, 0.12), 0 1px 3px rgba(168, 85, 247, 0.08);
+}
+
+:root[data-theme='fun'] body {
+  background-color: var(--bg);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><text x='20' y='55' font-size='32' opacity='0.16'>🌴</text><text x='160' y='95' font-size='28' opacity='0.16'>🌺</text><text x='60' y='170' font-size='30' opacity='0.16'>☀️</text><text x='190' y='220' font-size='26' opacity='0.16'>🌊</text></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+:root[data-theme='fun'] .app-top {
+  background: linear-gradient(135deg, #fde68a 0%, #fbcfe8 55%, #e9d5ff 100%);
+  border-bottom-color: #f5d0fe;
+}
+
+:root[data-theme='fun'] .app-header h1::before {
+  content: '🌴 ';
+}
+
+:root[data-theme='fun'] .app-header h1::after {
+  content: ' ✈️';
+}
+
+:root[data-theme='fun'] .month-label::after,
+:root[data-theme='fun'] .group-month h2::after {
+  content: ' 🌺';
+  opacity: 0.7;
+}
+
+:root[data-theme='fun'] .empty::before {
+  content: '🏝️';
+  display: block;
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+:root[data-theme='fun'] .add-btn,
+:root[data-theme='fun'] .today-btn,
+:root[data-theme='fun'] .modal-actions .primary,
+:root[data-theme='fun'] .empty .primary {
+  background: linear-gradient(135deg, #ec4899 0%, #a855f7 100%);
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.35);
+}
+
+:root[data-theme='fun'] .view-toggle button.active,
+:root[data-theme='fun'] .type-toggle button.active,
+:root[data-theme='fun'] .who-toggle button.active {
+  background: linear-gradient(135deg, #ec4899 0%, #a855f7 100%);
+  border-color: transparent;
+  color: #ffffff;
+}
+
+:root[data-theme='fun'] .card {
+  border-radius: 16px;
+}
+
+:root[data-theme='fun'] .cal-cell {
+  border-radius: 12px;
+}
+
 body {
   background: var(--bg);
   color: var(--text);

@@ -10,7 +10,7 @@ import {
 } from './storage'
 import { currentMonthKey, formatRange, monthKey, monthLabel } from './dates'
 import CalendarView from './CalendarView'
-import { applyTheme, loadTheme, saveTheme } from './theme'
+import { applyTheme, loadTheme, nextTheme, saveTheme } from './theme'
 import type { Theme } from './theme'
 import './App.css'
 
@@ -25,6 +25,18 @@ const WHO_LABEL: Record<Who, string> = {
   rich: 'Rich',
   syd: 'Syd',
   both: 'Both',
+}
+
+const THEME_ICON: Record<Theme, string> = {
+  light: '☾',
+  dark: '✨',
+  fun: '☀',
+}
+
+const THEME_NEXT_LABEL: Record<Theme, string> = {
+  light: 'dark',
+  dark: 'fun',
+  fun: 'light',
 }
 
 interface FormState {
@@ -161,10 +173,10 @@ export default function App() {
             <button
               type="button"
               className="theme-btn"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+              onClick={() => setTheme(nextTheme(theme))}
+              aria-label={`Switch to ${THEME_NEXT_LABEL[theme]} mode`}
             >
-              {theme === 'dark' ? '☀' : '☾'}
+              {THEME_ICON[theme]}
             </button>
             <button
               className="add-btn"
