@@ -474,6 +474,7 @@ body {
   box-shadow: var(--shadow);
   cursor: pointer;
   transition: transform 0.08s ease;
+  scroll-margin-top: 130px;
 }
 
 .card:active {
