@@ -118,9 +118,12 @@ export default function App() {
 
   const currentKey = currentMonthKey()
   const today = todayIso()
-  const upcomingId = items
+  const notPast = items
     .filter((item) => (item.endDate ?? item.startDate) >= today)
-    .sort((a, b) => a.startDate.localeCompare(b.startDate))[0]?.id
+    .sort((a, b) => a.startDate.localeCompare(b.startDate))
+  const ongoing = notPast.filter((item) => item.startDate <= today)
+  // Prefer the most recently started in-progress item; otherwise the next to start.
+  const upcomingId = (ongoing.length ? ongoing[ongoing.length - 1] : notPast[0])?.id
 
   useEffect(() => {
     if (view !== 'timeline') return
