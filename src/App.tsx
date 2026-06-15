@@ -117,15 +117,18 @@ export default function App() {
     }))
 
   const currentKey = currentMonthKey()
-  const firstUpcomingIndex = months.findIndex((m) => m.key >= currentKey)
+  const today = todayIso()
+  const upcomingId = items
+    .filter((item) => (item.endDate ?? item.startDate) >= today)
+    .sort((a, b) => a.startDate.localeCompare(b.startDate))[0]?.id
 
   useEffect(() => {
     if (view !== 'timeline') return
-    if (firstUpcomingIndex <= 0) return
+    if (!upcomingId) return
     requestAnimationFrame(() => {
       upcomingAnchorRef.current?.scrollIntoView({ block: 'start' })
     })
-  }, [view, firstUpcomingIndex])
+  }, [view, upcomingId])
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -226,16 +229,16 @@ export default function App() {
             </button>
           </div>
         )}
-        {view === 'timeline' && months.map(({ key, label, items: monthItems }, idx) => (
+        {view === 'timeline' && months.map(({ key, label, items: monthItems }) => (
           <section
             key={key}
             className={`group group-month${key < currentKey ? ' group-past' : ''}`}
-            ref={idx === firstUpcomingIndex && firstUpcomingIndex > 0 ? upcomingAnchorRef : undefined}
           >
             <h2>{label}</h2>
             {monthItems.map((item) => (
               <article
                 key={item.id}
+                ref={item.id === upcomingId ? upcomingAnchorRef : undefined}
                 className={`card card-${item.type}`}
                 onClick={() => startEdit(item)}
               >
